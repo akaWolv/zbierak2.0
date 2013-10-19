@@ -1,0 +1,391 @@
+    #image_heap {
+        height: 100%; 
+        width: 100%; 
+        background: inherit;
+    }
+
+    .mainImageContainer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        overflow-x: hidden;
+    }
+
+    .heapImage .blend {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: #000;
+        opacity: 0.5;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        -o-border-radius: 20px;
+        border-radius: 20px;
+    }
+
+    .heapImage {
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        -o-border-radius: 20px;
+        border-radius: 20px ;
+        height: 98%;
+        background: #222;
+        border: solid 2px rgb(255, 140, 0);
+        width: 90%;
+        position: absolute;
+        overflow: hidden;
+        left: 100%;
+    }
+
+    .heapImage img {
+        width: auto;
+        height: auto;
+        max-width: auto;
+        max-height: auto;
+        left: 0;
+        right: 0;
+        margin: auto;
+        position: absolute;
+    }
+
+    .heap0 img
+    {
+        /*left: 0;*/
+        /*right: auto;*/
+    }
+
+    .heap0
+    {
+        left: 0%;
+        height: 95%;
+        width: 95%;
+        margin-top: 1%;
+    }
+    .heap1
+    {
+        left: 9%;
+        margin-top: 0%;
+    }
+    .heap2
+    {
+        left: 100%;
+    }
+
+    .heap0 .blend {
+        opacity: 0.5;
+    }
+    .heap1 .blend {
+        opacity: 0;
+    }
+    .heap2 .blend {
+        opacity: 0;
+    }
+
+    .heapAnimate,
+    .heapAnimate .blend {
+        -webkit-transition: all ease-out 0.3s;
+           -moz-transition: all ease-out 0.3s;
+             -o-transition: all ease-out 0.3s;
+                transition: all ease-out 0.3s;
+    }
+
+    .heapAnimate.ng-move {
+        left: 0;
+        height: 95%;
+        margin-top: 1%;
+    }
+    .heapAnimate.ng-move-active {
+        left: 9%;
+        height: 98%;
+        margin-top: 0;
+    }
+
+    .heapAnimate.ng-move .blend{
+        opacity: 0.5;
+        display: block;
+    }
+    .heapAnimate.ng-move-active .blend{
+        opacity: 0;
+    }
+
+    .heapAnimate.heap0.ng-enter {
+        left: -100%;
+        height: 90%;
+        margin-top: 3%;
+    }
+    .heapAnimate.heap0.ng-enter-active {
+        left: -0%;
+        height: 95%;
+        margin-top: 1%;
+    }
+    .heapAnimate.heap0.ng-leave-active {
+        left: -100%;
+        height: 90%;
+        margin-top: 3%;
+    }
+
+    .heapAnimate.heap1.ng-enter {
+        left: 80%;
+    }
+    .heapAnimate.heap1.ng-enter-active {
+        left: 9%;
+    }
+    .heapAnimate.heap1.ng-leave-active {
+        left: -100%;
+        height: 90%;
+    }
+
+
+    #next_previous_preview {
+        overflow: hidden;
+        height: 100px;
+    }
+
+    #next_previous_preview div.previewListContainer {
+        overflow: hidden;
+        height: 100%;
+    }
+
+    #next_previous_preview ul {
+        overflow: hidden;
+        list-style: none;
+        margin: 2% auto;
+    }
+    #next_previous_preview li {
+        width: 13%;
+        height: 50px;
+        min-height: 50px;
+        border: solid 1px black;
+        background-repeat: no-repeat;heapAnimate
+        background-position: center;
+        background-size: cover;
+        float: left;
+        position: relative;
+        top: 0;
+        opacity: 0.5;
+    }
+    #next_previous_preview li:hover {
+        opacity: 1;
+        cursor: pointer;
+    }
+    #next_previous_preview .listContainer {
+        background-color: #111;
+        border: solid 1px orange;
+    }
+    #next_previous_preview .blend {
+        width: 100%; 
+        height: 100%; 
+        background: black; 
+        opacity: 0.5;
+    }
+    .previewAnimation.ng-enter,
+    .previewAnimation.ng-leave {
+        -webkit-transition: all linear 0.5s;
+           -moz-transition: all linear 0.5s;
+             -o-transition: all linear 0.5s;
+                transition: all linear 0.5s ;
+    }
+    .previewAnimation.ng-enter {
+        /*top: 1000px;*/
+        left: 0;
+        opacity: 0;
+    }
+    .previewAnimation.ng-enter-active {
+        opacity: 1;
+        /*top: 0;*/
+    }
+    .previewAnimation.ng-leave {
+        opacity: 1;
+    }
+    .previewAnimation.ng-leave-active {
+        opacity: 0;
+        width: 0;
+    }
+
+
+    .previewAnimation.ng-hide-add,
+    .previewAnimation.ng-hide-remove {
+        -webkit-transition: all linear 0.2s;
+           -moz-transition: all linear 0.2s;
+             -o-transition: all linear 0.2s;
+                transition: all linear 0.2s;
+
+        display: block !important;
+    }
+    .previewAnimation.ng-hide-remove,
+    .previewAnimation.ng-hide-add-active {
+        /*left: -200px;*/
+        opacity: 0;
+        width: 0 !important;
+    }
+    .previewAnimation.ng-hide-remove-active
+    {
+        opacity: 1;
+        width: 50px !important;
+        /*width: 0;*/
+    }
+    .animate-show.ng-hide-remove-active {
+        /*top: -200px;*/
+        opacity: 1;
+        width: 50px;
+        left: 200px;
+    }
+
+    #myCollection ul.previewList li
+    {
+        width: 13%;
+        height: 50px;
+        border: solid 1px black;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+    }
+
+    #myCollection .handlersContainer {
+        margin: 10px auto; 
+        text-align: center;
+        width: inherit;
+    }
+
+    #myCollection .handlersContainer button{
+        color: black;
+    }
+
+    .rightPanel {
+        height: 100%;
+        background-color: #191919;
+    }
+
+    .rightPanel .rPBox {
+        background-color: #333;
+        color: #ddd;
+        margin-top: 10px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -o-border-radius: 5px;
+        border-radius: 5px ;
+        overflow: hidden;
+    }
+
+    .rightPanel .rPBox .first {
+        min-height: 40px;
+        margin: 0 auto;
+    }
+
+    .rightPanel .linkList {
+        background-color: transparent;
+        color: #ddd;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -o-border-radius: 5px;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .rightPanel .headerTitle {
+        background-color: #444;
+        text-align: center;
+        margin-left: 0;
+    }
+
+    .sliderExample {
+        width: 20px;
+        background-color: #f5f5f5;
+        border: 1px solid #f0f0f0;
+        position: absolute;
+        top: 41px;
+        min-width: 40px;
+        left: auto;
+        right: 0;
+    }
+    .sliderExample > div {
+        margin: 10px auto;
+    }
+    .popover {
+        max-width:600px;
+    }
+
+    .heapImage .descBox {
+        position: absolute;
+        bottom: 0;
+        background-color: black;
+        line-height: 4em;
+        width: 100%;
+        padding: 0 20px;
+        color: white;
+    }
+
+    .gui {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    #shortcutsMap {
+        width: 100%;
+    }
+    #shortcutsMap button {
+        font-family: "Courier New", Courier, monospace !important;
+    }
+
+    #loaderBlend {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #loaderBlend div.rotator {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url('../img/ajax-loader.gif');
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    #loaderBlend div.sorry {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: #eee;
+        font-size: 5em;
+        line-height: 2em;
+    }
+    #loaderBlend div.blend {
+        background-color: #222;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.9;
+    }
+    #loaderBlend div.infoBox {
+        background-color: #000;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 300px;
+        height: 70px;
+        line-height: 30px;
+        color: #eee;
+        text-align: center;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        -o-border-radius: 5px;
+        border-radius: 5px ;
+    }
+    #loaderBlend button.turnOffButton {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }

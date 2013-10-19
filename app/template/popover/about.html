@@ -1,0 +1,90 @@
+    <div class="modal-header">
+        <h2>About <i>Zbierak 2.0</i></h2>
+    </div>
+    <div class="modal-header">
+        <h4>- Fun at your coffee break -</h4>
+    </div>
+    <div class="modal-header">
+        Brought to you by  
+
+        <button
+            ng-click="openDevfuze()" 
+            class="btn btn-inverse btn-mini" 
+            style="
+                color: white; 
+                font-family: 'Courier New', Courier, monospace
+            ">
+            <b>
+                <span style="color: #a6e22e;">devFuze</span>(!){<span style="color: #ae81ff;">com</span>}
+            </b>
+        </button>
+    </div>
+    <div class="modal-header">
+        This app is created using <img src="http://angularjs.org/img/AngularJS-small.png" class="techLogo" style="background-color: #aaa;" alt="AngularJS" /> and <img src="http://jquery.com/jquery-wp-content/themes/jquery/images/logo-jquery.png" class="techLogo" style="background-color: #333;" alt="jQuery"  />.
+    </div>
+    <div class="modal-body">
+        <i>
+            Adaptation of known and liked <a href="http://zbierak.com" target="_blank">zbierak.com</a><br />
+            Gallery of the best, funniest pictures on the net! <br />
+            Continuing at your own risk... <b>18+ strongly recommended</b>.<br />
+        </i>
+    </div>
+    <div class="modal-footer" ng-switch="isStartup">
+    <div ng-switch-when="true">
+        <button class="btn btn-danger" ng-click="tooYoung()">I'm too young :( </button>
+        <button class="btn btn-success" ng-click="ok(dontShow)">Ok, I'm 18+</button>
+        <div class="row">
+            <label class="checkbox">
+                <div style="float: right; width: 20px;">
+                    <input class="checkbox" type="checkbox" ng-model="dontShow" ng-true-value="yes" ng-false-value="no" style="float: none;" /> 
+                </div>
+                <div style="float: right; line-height: 26px;">
+                    Dont show this message again
+                </div>
+            </label>
+        </div>
+    </div>
+    <div ng-switch-default>
+        <button class="btn btn-warning" ng-click="clearStorageConfirmCollapsed = !clearStorageConfirmCollapsed; clearStorageConfirmedCollapsed=true;"  style="float: left;">Clear data about seen images?</button>
+
+        <button class="btn btn-success" ng-click="ok(dontShow)">Okay, I got it</button>
+
+        <div class="row">
+            <div style="float: left; margin-left: 30px; margin-top: 5px;" ng-init="clearStorageConfirmCollapsed=true" collapse="clearStorageConfirmCollapsed">
+                <center>
+                    <div style="height: 22px; line-height: 22px; float: left; margin: 0 10px;">Sure?</div> 
+                    <div class="btn-group" style="float: left;">
+                        <button class="btn btn-danger btn-mini" ng-click="clearStorage(); clearStorageConfirmCollapsed = true; clearStorageConfirmedCollapsed = false;">yes</button>
+                        <button class="btn btn-success btn-mini" ng-click="clearStorageConfirmCollapsed = true;">no</button>
+                    </div>
+                </center>
+            </div>
+
+            <label class="checkbox">
+                <div style="float: right; width: 20px;">
+                    <input class="checkbox" type="checkbox" ng-model="dontShow" ng-true-value="yes" ng-false-value="no" style="float: none;" /> 
+                </div>
+                <div style="float: right; line-height: 26px;">
+                    Don't show this notification at startup
+                </div>
+            </label>
+        </div>
+        <div class="row">
+            <div style="float: left; margin-left: 30px; margin-top: 5px;">
+                <div  style="height: 22px; line-height: 22px; float: left; margin: 0 10px;" ng-init="clearStorageConfirmedCollapsed=true;" collapse="clearStorageConfirmedCollapsed">Data cleared! Refresh? <button class="btn btn-mini" ng-click="reloadPage()">Yes</button></div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <style>
+        .techLogo {
+            height: 25px; 
+            padding: 5px; 
+            vertical-align: middle;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -o-border-radius: 5px;
+            border-radius: 5px ;
+        }
+    </style>

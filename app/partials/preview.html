@@ -1,0 +1,329 @@
+<link href="css/preview.css" rel="stylesheet">
+
+<div style="height: 100%;">
+    <div id="sliderContainer" class="span10" style="background-color: #1b1b1b; height: 100%; position: relative; overflow: hidden;">
+        <div id="image_heap" ng-if="imageHeapActive">
+            <div
+                ng-repeat="image in imageHeap"
+                class="heapImage heap{{$index}} heapAnimate"
+                ng-click="changeImage($first == true && -1 || 1)"
+                ng-init="buttons = { myCollection : 'to_add' }"
+                >
+                <div 
+                    class="mainImageContainer">
+                    <img
+                        ng-if="isDefined(image.id)" 
+                        zbierak-image-src="{{imageBaseUrl}}{{image.full_file_info}}"
+                        heap-image-render
+                        ng-style="{width: image.widthPercents + '%', marginTop: image.marginTop}"
+                        />
+                </div>
+
+                <!-- blend - disabled due to very poor performace of switch image animation -->
+                <!-- <div class="blend rounded"></div> -->
+
+                <!-- GUI -->
+                <div
+                    style="opacity: {{menuOpacity}};"
+                    class="btn-group gui"
+                    ng-mouseover="menuOpacity=1"
+                    ng-mouseleave="menuOpacity=0.2"
+                    ng-click="$event.stopPropagation();"
+                    >
+                    <button
+                        ng-if="'' != image.desc"
+                        class="btn btn-large btn-inverse"
+                        tooltip-append-to-body="true" tooltip-placement="bottom" tooltip="Description"
+                        >
+                        <span style="color: gray; max-width: 50%; overflow: hidden;"></span><i>{{image.desc}}</i>
+                    </button>
+                    <button
+                        class="btn btn-large btn-warning"
+                        ng-click="$event.stopPropagation();"
+                        class="btn btn-medium btn-warning ng-dirty"
+                        popover-placement="bottom"
+                        popover-title="Image url:"
+                        popover="{{imageBaseUrl}}{{image.full_file_info}}"
+                        >
+                        <span class="icon-edit" 
+                        tooltip-append-to-body="true" tooltip-placement="bottom" tooltip="Show image URL"></span>
+                    </button>
+                     <button
+                            class="btn btn-large btn-warning"
+                            ng-click="$event.stopPropagation(); $window.open('{{imageBaseUrl}}{{image.full_file_info}}','_blank');"
+                            tooltip-append-to-body="true" tooltip-placement="bottom" tooltip="Open in new window"
+                            >
+                            <span class="icon-picture"></span>
+                    </button>
+                    <button
+                        ng-hide="isMyCollectionPreview == true || isInMyCollection(image)"
+                        class="btn btn-large btn-warning"
+                        ng-click="addToMyCollection(currentImgObject, $event)"
+                        tooltip-append-to-body="true" tooltip-placement="bottom" tooltip="Add to My Collection"
+                        >
+                        <span class="icon-ok"></span>
+                    </button>
+                    <button
+                        ng-show="isMyCollectionPreview == false && isInMyCollection(image)"
+                        class="btn btn-large btn-success"
+                        ng-click="removeFromMyCollection(currentImgObject, $event)"
+                        tooltip-append-to-body="true" tooltip-placement="bottom" tooltip="Remove from My Collection"
+                        >
+                        <span class="icon-flag"></span>
+                    </button>
+                    <button
+                        class="btn btn-large btn-warning"
+                        ng-click="fullscreen($event, $index)"
+                        tooltip-append-to-body="true" tooltip-placement="bottom" tooltip="Fullscreen"
+                        >
+                        <span class="{{imgButtons.zoom_in_out.ico}}"></span>
+                    </button>
+
+                    <button
+                        class="btn btn-large btn-warning dropdown-toggle"
+                        class="btn" data-toggle="dropdown"
+                        tooltip-append-to-body="true" tooltip-placement="bottom" tooltip="Zoom"
+                        >
+                        <span class="icon-zoom-in"></span>
+                    </button>
+                    <div class="dropdown-menu sliderExample btn-warning">
+                        <div style="width: 100%; height: 10px; margin-bottom: 20px;">
+                            <span class="icon-plus" style="position: absolute; margin: 0 auto; left: 0; right: 0;"></span>
+                        </div>
+                        <div ui-slider="{orientation: 'vertical'}" min="20" max="100" ng-model="image.zoom">
+                            <zoom value="image.zoom" image="image" imgstyle="imgStyle"></zoom>
+                        </div>
+                        <div style="width: 100%; height: 10px; margin-top: 10px;">
+                            <span class="icon-minus" style="position: absolute; margin: 0 auto; left: 0; right: 0;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="loaderBlend" ng-if="loaderBleandActive">
+            <div class="blend"></div>
+            <div ng-if="!displaySorryBlend" class="rotator"></div>
+            <div ng-if="displaySorryBlend" class="sorry"><center><br />Ok buddy... <br />you have seen enough!<br /> NOW GET BACK TO WORK!</center></div>
+            <div class="infoBox" ng-if="50 < pagesLoadedWithNoImagesToSee">
+                <siv class="offset1 span10" >
+                    No images to preview for {{currentPage}} pages 
+                </siv>
+                <button class="btn btn-inverse" ng-click="stopLoadingNewDataSwitch()">STOP?</button>
+            </div>
+            <button ng-click="hideLoaderBlend()" class="btn btn-inverse turnOffButton"><span class="icon-remove"></span></button>
+        </div>
+    </div>
+
+    <div class="span2 rightPanel">
+
+        <div id="todo1" class="row-fluid rPBox first" style="">
+            <div class="row headerTitle span12">
+                <h4>
+                    <center>
+                        <a class="brand" ng-href="{{APP_URL}}" target="_self" style="color: white;">Zbierak 2.0</a>
+                    </center>
+                </h4>
+            </div>
+            <div class="row-fluid span12" style="padding: 5px 0;">
+                <button class="btn btn-mini btn-inverse span6" ng-click="about()">about</button>
+
+                <button class="btn btn-mini btn-inverse span6 {{false == shortcutsCollapse && 'active' || ''}}" ng-click="shortcutsCollapse = !shortcutsCollapse">key shortcuts</button>
+            </div>
+            <div class="span12" ng-init="shortcutsCollapse=true" collapse="shortcutsCollapse" style="min-height: 0;">
+                <div class="row span12" style="margin-left: 0;">
+                    <table id='shortcutsMap'>
+                        <tr>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_q.class}}"
+                                ng-click="keyPress('Q')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="zoom +">Q</button>
+                            </td>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_w.class}}"
+                                ng-click="keyPress('W')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="scroll up">W</button>
+                            </td>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_e.class}}"
+                                ng-click="keyPress('E')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="highlight menu">E</button>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_a.class}}"
+                                ng-click="keyPress('A')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="previous image">A</button>
+                            </td>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_s.class}}"
+                                ng-click="keyPress('S')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="scroll down">S</button>
+                            </td>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_d.class}}"
+                                ng-click="keyPress('D')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="next image">D</button>
+                            </td>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_f.class}}"
+                                ng-click="keyPress('F')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="fullscreen">F</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_z.class}}"
+                                ng-click="keyPress('Z')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="zoom -">Z</button>
+                            </td>
+                            <td></td>
+                            <td>
+                                <button 
+                                class="btn btn-large btn-inverse {{shortcutButton.button_c.class}}"
+                                ng-click="keyPress('C')"
+                                tooltip-append-to-body="true" tooltip-placement="top" tooltip="add to My Collection">C</button>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row headerTitle span12" style="font-size: 0.9em; min-height: 0.8em;">
+                Developed by <a href="http://devfuze.com" target="_blank" style="color: white; font-family: 'Courier New', Courier, monospace"><b><span style="color: #a6e22e;">devFuze</span>(!){<span style="color: #ae81ff;">com</span>}</b></a>
+            </div>
+        </div>
+
+        <div id="shared_collection_info" class="row-fluid rPBox" ng-if="isMyCollectionPreview == true">
+            <div 
+                class="row headerTitle" 
+                >
+                <h5>Enjoy this {{1 == myCollectionNumberOfImages && ' ' || 'collection of'}} {{myCollectionNumberOfImages}} {{1 == myCollectionNumberOfImages && 'image' || 'images'}}</h5>
+            </div>
+        </div>
+
+        <div 
+            id="next_previous_preview" 
+            class="row-fluid rPBox"
+            ng-hide="true == isMyCollectionPreview && 1 == myCollectionNumberOfImages"
+            >
+            <div 
+                class="row headerTitle" 
+                ng-switch="isMyCollectionPreview"
+                >
+                <h5 ng-switch-when="false">Next Thumbnails</h5>
+                <h5 ng-switch-when="true">Collection Thumbnails</h5>
+            </div>
+            <div class="span12 previewListContainer">
+                <ul>
+                    <li 
+                        ng-repeat="thumb in collection | limitTo:collectionIndex+7 | limitTo:-7"
+                        ng-style="isDefined(thumb.id) && {backgroundImage : 'url('+imageBaseUrl+thumb.full_file_info+')'} || null"
+                        ng-animate=" 'previewAnimation' "
+                        ng-click="changeImage(thumb)"
+                        ng-hide="!isDefined(thumb.id)"
+                        >
+                    <div 
+                        ng-show="thumb.full_file_info == currentImgObject.full_file_info"
+                        class="blend"
+                        >
+                    </div>
+                    </li> 
+                </ul> 
+            </div>
+        </div>
+
+        <div 
+            id="myCollection" 
+            ng-show="'' !== myCollectionLinksList"
+            class="row-fluid rPBox" 
+            style="overflow: hidden; border-bottom: solid 2px black;"
+            ng-init="showUrlList = false"
+            >
+                <div class="row headerTitle">
+                    <h5><center>My Collection to share</center></h5>
+                </div>
+                <div class="span12 listContainer"> 
+                    <ul class="offset1 span10 inline previewList" style="width: inherit; margin: 0 auto;">
+                        <li ng-repeat="url in myCollection"  
+                            ng-style="undefined !== url && {backgroundImage : 'url({{imageBaseUrl}}{{url.full_file_info}})'} || null"
+                            class="previewAnimation" 
+                            ng-animate=" 'previewAnimation' "
+                        >
+                        </li>
+                    </ul>
+                </div>
+                <hr style="border: solid 1px #444; margin: 10px;"/>
+                <div class="row-fluid handlersContainer">
+                    <div class="btn-group row-fluid">
+                        <button 
+                            class="btn btn-medium btn-warning  {{ !galleryLinkIsCollapsed && 'active' || ''}}" 
+                            ng-click="generateGalleryLink(); galleryLinkIsCollapsed = !galleryLinkIsCollapsed; linksListIsCollapsed = true; confirmCollapsed = true;"
+                            >
+                            <span 
+                            tooltip-append-to-body="true" tooltip-placement="left" tooltip="get link to gallery of My Collection" class="icon-share"></span>
+                        </button>
+                        <button 
+                            class="btn btn-medium btn-warning {{ !linksListIsCollapsed && 'active' || ''}}" 
+                            ng-click="linksListIsCollapsed = !linksListIsCollapsed; galleryLinkIsCollapsed = true; confirmCollapsed = true;"
+                            >
+                            <span tooltip-append-to-body="true" tooltip-placement="left" tooltip="get all images links from My Collection" class="icon-list"></span>
+                        </button>
+                        <button 
+                            class="btn btn-medium btn-danger"
+                            ng-click="confirmCollapsed = !confirmCollapsed; galleryLinkIsCollapsed = true; linksListIsCollapsed = true;"
+                            ><span 
+                            tooltip-append-to-body="true" tooltip-placement="left" tooltip="remove all images from collection" class="icon-trash"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row-fluid linkList" ng-init="confirmCollapsed=true" collapse="confirmCollapsed">
+                    <center>Remove collection</center> 
+                    <center>
+                        <div class="btn-group" style="margin-bottom: 10px;">
+                            <button class="btn btn-danger" ng-click="confirmCollapsed = true; clearMyCollection();">yes</button>
+                            <button class="btn btn-success" ng-click="confirmCollapsed = true;">no</button>
+                        </div>
+                    </center>
+                </div>
+                <div class="row-fluid linkList" ng-init="galleryLinkIsCollapsed=true" collapse="galleryLinkIsCollapsed">
+                    <center><h6>One link to gallery:</h6></center>
+                    <div style="width: 100%; margin: 0;">
+                        <textarea
+                            id="linksUrlTA"
+                            ng-model="myCollectionGalleryLink"
+                            rows="5"
+                            style="width: 100%; margin: 0 auto; overflow: hidden;"
+                            class="oneClickMarkTA"
+                            >
+                        </textarea>
+                    </div>
+                </div>
+                <div class="row-fluid linkList" ng-init="linksListIsCollapsed=true" collapse="linksListIsCollapsed">
+                    <center><h6>List of links:</h6></center>
+                    <div style="width: 100%; margin: 0;">
+                        <textarea
+                            id="linksListTA"
+                            ng-model="myCollectionLinksList"
+                            rows="5"
+                            style="width: 95%; margin: 0 auto; overflow: hidden; white-space:nowrap;"
+                            class="oneClickMarkTA"
+                            >
+                        </textarea>
+                    </div>
+                </div>
+
+        </div>
+
+    </div>
+</div>
