@@ -98,6 +98,26 @@
                         </div>
                     </div>
                 </div>
+                <a  
+                    ng-if="$index == 0 && isDefined(image.id)" 
+                    style="opacity: {{menuOpacity}};" 
+                    class="left carousel-control slideArrowsLeft" 
+                    href=""
+                    ng-mouseover="menuOpacity=1"
+                    ng-mouseleave="menuOpacity=0.2"
+                    tooltip-append-to-body="true" tooltip-placement="top" tooltip="Previous">
+                    ‹
+                </a>
+                <a 
+                    ng-if="$index == 1 && canGoNextStep" 
+                    style="opacity: {{menuOpacity}};" 
+                    class="right carousel-control slideArrowsRight" 
+                    href=""
+                    ng-mouseover="menuOpacity=1"
+                    ng-mouseleave="menuOpacity=0.2"
+                    tooltip-append-to-body="true" tooltip-placement="top" tooltip="Next">
+                    ›
+                </a>
             </div>
         </div>
         <div id="loaderBlend" ng-if="loaderBleandActive">
@@ -322,8 +342,6 @@
                         </textarea>
                     </div>
                 </div>
-
         </div>
-
     </div>
 </div>
